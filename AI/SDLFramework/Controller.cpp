@@ -14,6 +14,7 @@ Controller::~Controller()
 void Controller::Init()
 {
 	vertici = new std::vector<Vertex*>;
+	edges = new std::vector<Edge*>;
 
 	//make vertexes and edges
 	//we only put vertici in a vector, edges are saved within a vertex
@@ -40,6 +41,15 @@ void Controller::Init()
 	Edge* edgeBetween1And4 = new Edge(vertex1, vertex4, 1);
 	Edge* edgeBetween1And6 = new Edge(vertex1, vertex6, 3);
 	Edge* edgeBetween5And6 = new Edge(vertex2, vertex6, 5);
+
+	edges->push_back(edgeBetween1And5);
+	edges->push_back(edgeBetween1And2);
+	edges->push_back(edgeBetween2And4);
+	edges->push_back(edgeBetween2And3);
+	edges->push_back(edgeBetween4And5);
+	edges->push_back(edgeBetween1And4);
+	edges->push_back(edgeBetween1And6);
+	edges->push_back(edgeBetween5And6);
 }
 
 void Controller::AStar()

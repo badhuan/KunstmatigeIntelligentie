@@ -8,9 +8,11 @@ public:
 	virtual ~Controller();
 	void AStar();
 	std::vector<Vertex*>* getVertices(){ return vertici; };
+	std::vector<Edge*>* getEdges(){ return edges; };
 
 private:
 	void Init();
 	std::vector<Vertex*>* vertici;
+	std::vector<Edge*>* edges;
 };
 

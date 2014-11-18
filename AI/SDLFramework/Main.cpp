@@ -47,9 +47,13 @@ int main(int args[])
 		application->SetColor(Color(0, 0, 0, 255));
 		application->DrawText("Welcome to KMint", 800 / 2, 600 / 2);
 		
-		//Test draw vertex
+		//Test draw vertices
 		for (auto vertex : *controller->getVertices()){
-			application->DrawLine(100 + vertex->getX(), 100 + vertex->getY(), vertex->getY(), vertex->getY());
+			application->DrawRect(vertex->getX(), vertex->getY(), 10, 10, true);
+		}
+		//Test draw edges
+		for (auto edge : *controller->getEdges()){
+			application->DrawLine(edge->getSource()->getX(), edge->getSource()->getY(), edge->getTarget()->getX(), edge->getTarget()->getY());
 		}
 
 		// For the background
