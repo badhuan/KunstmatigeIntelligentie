@@ -1,4 +1,5 @@
 #include "Controller.h"
+#include <time.h>
 
 
 Controller::Controller()
@@ -9,6 +10,19 @@ Controller::Controller()
 
 Controller::~Controller()
 {
+	for (auto vertex : *vertici){
+		delete vertex;
+	}
+
+	for (auto edge : *edges){
+		delete edge;
+	}
+
+	delete vertici;
+	delete edges;
+
+	vertexCow = NULL;
+	vertexRabbit = NULL;
 }
 
 void Controller::Init()
@@ -50,9 +64,24 @@ void Controller::Init()
 	edges->push_back(edgeBetween1And4);
 	edges->push_back(edgeBetween1And6);
 	edges->push_back(edgeBetween5And6);
+
+	/* initialize random seed: */
+	srand(time(NULL));
+
+	//randomize the verticis Cow and Rabbit
+	vertexCow = vertici->at(rand() % vertici->size());
+	vertexRabbit = vertici->at(rand() % vertici->size());
+	if (vertexRabbit == vertexCow){
+		vertexRabbit = vertici->at(rand() % vertici->size());
+	}
 }
 
 void Controller::AStar()
 {
 	//a* algorithm
+
+	//doe iets met vertexCow & vertexRabbit
+	if (vertexCow == vertexRabbit){
+		vertexRabbit = vertici->at(rand() % vertici->size());
+	}
 }

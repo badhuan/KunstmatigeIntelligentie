@@ -5,7 +5,7 @@ Vertex::Vertex()
 
 }
 
-Vertex::Vertex(int x, int y) : x(x), y(y)
+Vertex::Vertex(int x, int y) : x(x*5), y(y*8)
 {
 	edges = new std::vector<Edge*>();
 }
