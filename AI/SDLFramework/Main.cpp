@@ -60,7 +60,7 @@ int main(int args[])
 		}
 		
 		application->SetColor(Color(0, 0, 0, 255));
-		application->DrawText("Welcome to KMint", 800 / 2, 600 / 2);
+		application->DrawText("", 800 / 2, 600 / 2);
 		
 		int height = 10;
 		int width = 10;
