@@ -7,6 +7,7 @@ public:
 	Controller();
 	virtual ~Controller();
 	void AStar();
+	void setEdges(Vertex* currentVertex);
 	std::vector<Vertex*>* getVertices(){ return vertici; };
 	std::vector<Edge*>* getEdges(){ return edges; };
 	Vertex* getVertexCow(){ return vertexCow; };
@@ -19,6 +20,8 @@ private:
 
 	Vertex* vertexCow;
 	Vertex* vertexRabbit;
+
+	bool running = true;
 
 	void swap(std::vector<Vertex*>* list, Vertex* source, Vertex* target);
 	int calculateHeuristic(Vertex* source, Vertex* target);

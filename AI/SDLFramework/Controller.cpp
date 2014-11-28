@@ -70,6 +70,12 @@ void Controller::Init()
 	edges->push_back(edgeBetween4And7);
 	edges->push_back(edgeBetween7And6);
 
+
+	//set Edges to Vertices
+	for (auto d : *vertici){
+		setEdges(d);
+	}
+
 	/* initialize random seed: */
 	srand(time(NULL));
 
@@ -88,24 +94,35 @@ void Controller::AStar()
 	std::vector<Vertex*>* openList = new std::vector<Vertex*>();
 
 	openList->push_back(vertexCow); //add starting point
-	while (openList->size() != 0)
+	while (running && openList->size() != 0)
 	{
-		std::vector<Edge*>* edges = openList->at(0)->getEdges();
+		std::vector<Edge*>* edges2 = openList->at(0)->getEdges();
 
-		for (int i = 0; i < edges->size(); i++)
+		for (int i = 0; i < edges2->size(); i++)
 		{
-			openList->push_back(edges->at(i)->getTarget());
+			
+			//if  openList->at(0) == target, set the source of the edge edges2->at(i)
+			if (edges2->at(i)->getTarget() == openList->at(0)){
+				openList->push_back(edges2->at(i)->getSource());
+			}
+			else{
+				openList->push_back(edges2->at(i)->getTarget());
+			}
+
 			Vertex* current = nullptr;
 			//loop through openList, then calculate the smallest distance
-			for (int i = 0; i < openList->size(); i++)
+			for (int i2 = 0; i2 < openList->size(); i2++)
 			{
-				if (current = nullptr)
+				if (current == nullptr)
 					current = openList->at(i);
 				else
 				{
-					if (edges->at(i)->getWeight() + calculateHeuristic(openList->at(i), vertexRabbit) > calculateHeuristic(current, vertexRabbit))
+					if (current == vertexRabbit){
+						running = false; // A* algoritme is klaar?
+					}else 
+					if (edges2->at(i2)->getWeight() + calculateHeuristic(openList->at(i2), vertexRabbit) > calculateHeuristic(current, vertexRabbit))
 					{
-						current = openList->at(i);
+						current = openList->at(i2);
 					}
 				}
 			}
@@ -116,6 +133,23 @@ void Controller::AStar()
 
 	delete closedList;
 	delete openList;
+}
+
+void Controller::setEdges(Vertex* currentVertex){
+	//for ( auto edge : *getEdges()){
+	//	if (edge->getSource() == currentVertex){
+	//		currentVertex->addEdge(edge);
+	//	}
+	//	else if(edge->getTarget() == currentVertex){
+	//		currentVertex->addEdge(edge);
+	//	}
+	//}
+	for (auto edge : *edges){
+		if (edge->getSource() == currentVertex || edge->getTarget() == currentVertex){
+			currentVertex->addEdge(edge);
+		}
+	}
+
 }
 
 void Controller::swap(std::vector<Vertex*>* list, Vertex* source, Vertex* target)
