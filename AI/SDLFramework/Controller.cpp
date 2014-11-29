@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include <time.h>
-
+#include <algorithm>  //sort
+#include <list>
 
 Controller::Controller()
 {
@@ -87,84 +88,81 @@ void Controller::Init()
 	}
 }
 
-void Controller::AStar()
+void Controller::AStar(Vertex* start, Vertex* end)
 {
 	//a* algorithm
 	std::vector<Vertex*>* closedList = new std::vector<Vertex*>();
 	std::vector<Vertex*>* openList = new std::vector<Vertex*>();
+	std::list<Vertex*>* route = new std::list<Vertex*>();
 
-	openList->push_back(vertexCow); //add starting point
-	while (running && openList->size() != 0)
-	{
-		std::vector<Edge*>* edges2 = openList->at(0)->getEdges();
+	openList->push_back(start); //add starting point
 
-		for (int i = 0; i < edges2->size(); i++)
-		{
-			
-			//if  openList->at(0) == target, set the source of the edge edges2->at(i)
-			if (edges2->at(i)->getTarget() == openList->at(0)){
-				openList->push_back(edges2->at(i)->getSource());
-			}
-			else{
-				openList->push_back(edges2->at(i)->getTarget());
-			}
-
-			Vertex* current = nullptr;
-			//loop through openList, then calculate the smallest distance
-			for (int i2 = 0; i2 < openList->size(); i2++)
-			{
-				if (current == nullptr)
-					current = openList->at(i);
-				else
-				{
-					if (current == vertexRabbit){
-						running = false; // A* algoritme is klaar?
-					}else 
-					if (edges2->at(i2)->getWeight() + calculateHeuristic(openList->at(i2), vertexRabbit) > calculateHeuristic(current, vertexRabbit))
-					{
-						current = openList->at(i2);
-					}
-				}
-			}
-			swap(openList, openList->at(0), current);
-		}
-
+	for (Vertex* vertex : *vertici){
+		vertex->visitedBy = nullptr;
+		vertex->minDistance = std::numeric_limits<int>::max();
+		vertex->guessedTotalDistance = 0;
 	}
 
-	delete closedList;
-	delete openList;
+	start->minDistance = 0;
+
+	while (openList->size() != 0)
+	{
+		Vertex* vertex = openList->front();
+		openList->erase(openList->begin());
+
+		float GuessedDistance;
+		if (vertex == end){
+			GuessedDistance = 0;
+		}
+
+		else{
+			GuessedDistance = calculateHeuristic(vertex, end);
+
+		}
+
+		for (Edge* edge : *vertex->getEdges())
+		{
+			Vertex* target = edge->getTarget();
+
+			if (std::find(closedList->begin(), closedList->end(), target) == closedList->end()) {
+				int distance = edge->getWeight();
+
+				int totalDistance = vertex->minDistance + distance;
+				if ((totalDistance) < target->minDistance) {
+					target->minDistance = totalDistance;
+					target->guessedTotalDistance = totalDistance + GuessedDistance;
+					target->visitedBy = vertex;
+					openList->push_back(target);
+				}
+			}
+		}
+
+		closedList->push_back(vertex);
+
+		std::sort(openList->begin(), openList->end(), sortByGuessedTotalDistance);
+
+
+		Vertex* current = end;
+		while (current != nullptr && current != start){
+			route->push_front(current);
+			current = current->visitedBy;
+		}
+
+		closedList->clear();
+	}
+}
+
+bool Controller::sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs) { 
+	return lhs->guessedTotalDistance < rhs->guessedTotalDistance;
 }
 
 void Controller::setEdges(Vertex* currentVertex){
-	//for ( auto edge : *getEdges()){
-	//	if (edge->getSource() == currentVertex){
-	//		currentVertex->addEdge(edge);
-	//	}
-	//	else if(edge->getTarget() == currentVertex){
-	//		currentVertex->addEdge(edge);
-	//	}
-	//}
 	for (auto edge : *edges){
 		if (edge->getSource() == currentVertex || edge->getTarget() == currentVertex){
 			currentVertex->addEdge(edge);
 		}
 	}
 
-}
-
-void Controller::swap(std::vector<Vertex*>* list, Vertex* source, Vertex* target)
-{
-	Vertex* tempVertex = nullptr;
-	for (int i = 0; i < list->size(); i++)
-	{
-		if (list->at(i) == source)
-		{
-			tempVertex = source;
-			list->at(i) = target;
-			list->push_back(tempVertex);
-			return;
-		}
-	}
 }
 
 int Controller::calculateHeuristic(Vertex* source, Vertex* target)

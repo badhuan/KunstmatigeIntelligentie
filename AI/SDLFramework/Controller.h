@@ -6,7 +6,7 @@ class Controller
 public:
 	Controller();
 	virtual ~Controller();
-	void AStar();
+	void AStar(Vertex* start, Vertex* end);
 	void setEdges(Vertex* currentVertex);
 	std::vector<Vertex*>* getVertices(){ return vertici; };
 	std::vector<Edge*>* getEdges(){ return edges; };
@@ -23,7 +23,7 @@ private:
 
 	bool running = true;
 
-	void swap(std::vector<Vertex*>* list, Vertex* source, Vertex* target);
+	bool sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs);
 	int calculateHeuristic(Vertex* source, Vertex* target);
 };
 
