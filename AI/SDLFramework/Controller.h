@@ -23,7 +23,7 @@ private:
 
 	bool running = true;
 
-	bool sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs);
+	/*bool sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs);*/
 	int calculateHeuristic(Vertex* source, Vertex* target);
 };
 
