@@ -49,7 +49,7 @@ int main(int args[])
 					application->RemoveTexture(textureCow);
 					application->RemoveTexture(textureRabbit);
 					
-					controller->AStar();
+					controller->AStar(controller->getVertexCow(), controller->getVertexRabbit());
 					textureCow = application->LoadTexture("cow-2.png");
 					textureRabbit = application->LoadTexture("rabbit-3.png");
 					break;

@@ -3,6 +3,11 @@
 #include <algorithm>  //sort
 #include <list>
 
+
+bool sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs) {
+	return lhs->guessedTotalDistance < rhs->guessedTotalDistance;
+}
+
 Controller::Controller()
 {
 	Init();
@@ -140,20 +145,15 @@ void Controller::AStar(Vertex* start, Vertex* end)
 		closedList->push_back(vertex);
 
 		std::sort(openList->begin(), openList->end(), sortByGuessedTotalDistance);
-
-
-		Vertex* current = end;
-		while (current != nullptr && current != start){
-			route->push_front(current);
-			current = current->visitedBy;
-		}
-
-		closedList->clear();
 	}
-}
 
-bool Controller::sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs) { 
-	return lhs->guessedTotalDistance < rhs->guessedTotalDistance;
+	Vertex* current = end;
+	while (current != nullptr && current != start){
+		route->push_front(current);
+		current = current->visitedBy;
+	}
+
+	closedList->clear();
 }
 
 void Controller::setEdges(Vertex* currentVertex){
