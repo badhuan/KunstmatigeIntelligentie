@@ -49,7 +49,7 @@ int main(int args[])
 					application->RemoveTexture(textureCow);
 					application->RemoveTexture(textureRabbit);
 					
-					controller->AStar();
+					controller->AStar(controller->getVertexCow(), controller->getVertexRabbit());
 					textureCow = application->LoadTexture("cow-2.png");
 					textureRabbit = application->LoadTexture("rabbit-3.png");
 					break;
@@ -71,6 +71,7 @@ int main(int args[])
 		//Draw vertices
 		for (auto vertex : *controller->getVertices()){
 			application->DrawRect(vertex->getX(), vertex->getY(), height, width, true);
+			application->DrawText("x: "+std::to_string(vertex->getX()) +" y: "+ std::to_string(vertex->getY()), vertex->getX(), vertex->getY()+30);
 		}
 		//Draw edges
 		for (auto edge : *controller->getEdges()){
