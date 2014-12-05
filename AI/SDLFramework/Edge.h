@@ -1,5 +1,5 @@
 #pragma once
-class Vertex;  //forward declaration otherwise infinite include -> #include "vertex.h"
+class Vertex;//forward declaration otherwise infinite include -> #include "vertex.h"
 
 class Edge
 {

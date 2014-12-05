@@ -9,9 +9,14 @@ Edge::~Edge()
 {
 }
 
-Edge::Edge(Vertex* source, Vertex* target, int weight) : source(source), target(target), weight(weight)
+Edge::Edge(Vertex* source, Vertex* target, int weight)
 {
+	this->source = source;
+	this->target = target;
+	this->weight = weight;
+	
 }
+
 
 int Edge::getWeight()
 {
