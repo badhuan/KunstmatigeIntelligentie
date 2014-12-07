@@ -45,11 +45,17 @@ int main(int args[])
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym){
 				case SDLK_SPACE:
-					std::cout << "Space pressed" << std::endl;
+					//std::cout << "Space pressed" << std::endl;
 					application->RemoveTexture(textureCow);
 					application->RemoveTexture(textureRabbit);
 					
-					controller->AStar(controller->getVertexCow(), controller->getVertexRabbit());
+					//if (!controller->getRouteDone()){
+					//	controller->setPositionCowAndRabbit(); //reposition Cow & Rabbit
+					//}else if (controller->getRouteDone()){
+					//	controller->AStar(controller->getVertexCow(), controller->getVertexRabbit()); //A star
+					//}
+					controller->walkThroughGraph(); //reposition Rabbit, A starr and and walk the routes
+
 					textureCow = application->LoadTexture("cow-2.png");
 					textureRabbit = application->LoadTexture("rabbit-3.png");
 					break;

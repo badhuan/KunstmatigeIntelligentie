@@ -13,10 +13,10 @@ Vertex::Vertex(int x, int y) : x(x*5), y(y*8)
 
 Vertex::~Vertex()
 {
-	for (auto &it : *edges)
-	{
-		delete it;
-	}
+	//for (auto &it : *edges)
+	//{
+	//	delete it;
+	//}
 	delete edges;
 }
 

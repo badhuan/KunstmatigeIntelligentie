@@ -1,7 +1,9 @@
 #include "Controller.h"
 #include <time.h>
-#include <algorithm>  //sort
+#include <algorithm>
 #include <list>
+#include <iostream>
+
 
 
 bool sortByGuessedTotalDistance(Vertex *lhs, Vertex *rhs) {
@@ -27,8 +29,8 @@ Controller::~Controller()
 	delete vertici;
 	delete edges;
 
-	vertexCow = NULL;
-	vertexRabbit = NULL;
+	vertexCow = nullptr;
+	vertexRabbit = nullptr;
 }
 
 void Controller::Init()
@@ -76,15 +78,26 @@ void Controller::Init()
 		setEdges(d);
 	}
 
-	/* initialize random seed: */
+	/* initialize random seed (once): */
 	srand(time(NULL));
 
+	setPositionCowAndRabbit();
+
+}
+
+void Controller::setPositionCowAndRabbit(){
 	//randomize the verticis Cow and Rabbit
 	vertexCow = vertici->at(rand() % vertici->size());
-	vertexRabbit = vertici->at(rand() % vertici->size());
-	if (vertexRabbit == vertexCow){
+
+	bool SAMESPACE = true;
+	while (SAMESPACE){
 		vertexRabbit = vertici->at(rand() % vertici->size());
+		
+		if (vertexRabbit != vertexCow){
+			SAMESPACE = false;
+		}
 	}
+
 }
 
 void Controller::AStar(Vertex* source, Vertex* target)
@@ -92,7 +105,7 @@ void Controller::AStar(Vertex* source, Vertex* target)
 	//a* algorithm
 	std::vector<Vertex*> closedList;
 	std::vector<Vertex*> openList;
-	std::list<Vertex*> route;
+	//std::list<Vertex*> route;
 
 	if (source == target){
 		//ERROR
@@ -159,6 +172,8 @@ void Controller::AStar(Vertex* source, Vertex* target)
 
 	//m_OpenList->
 	closedList.clear();
+
+	routeDone = false;
 }
 
 void Controller::setEdges(Vertex* currentVertex){
@@ -206,4 +221,25 @@ int Controller::calculateHeuristic(Vertex* source, Vertex* target)
 		diffY = sourceY - targetY;
 	//we dont square the final answer, this takes a lot of processing power away
 	return (diffX * diffX) + (diffY * diffY);
+}
+
+void Controller::walkThroughGraph(){
+	if (route.size() != 0){
+		std::list<Vertex*>::iterator i = route.begin();
+		vertexCow = *i;
+	
+		route.remove(*i);
+		std::cout << "Walk!" << std::endl;
+
+	}
+	else{
+		routeDone = true;
+		std::cout << "Done!" << std::endl;
+	}
+
+	if (routeDone){
+		vertexRabbit = vertici->at(rand() % vertici->size());
+		AStar(vertexCow, vertexRabbit);
+		std::cout << "Positioned and Astarred " << std::endl;
+	}
 }
